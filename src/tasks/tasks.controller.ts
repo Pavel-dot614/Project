@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Delete, Put, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, Put, Param, ParseIntPipe } from '@nestjs/common';
 import { CreateTasksDto } from './dto/create-tasks-dto';
 import { TasksService } from './tasks.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -31,8 +31,8 @@ export class TasksController {
     @ApiResponse({ status: 200, description: 'Задача успешно удалена' })
     @ApiResponse({ status: 404, description: 'Задача не найдена' })
     @Delete(':id')
-    delete(@Param('id') id: string) {
-        return this.tasksService.deleteTask(Number(id));
+    delete(@Param('id', ParseIntPipe) id: number) {
+        return this.tasksService.deleteTask(id);
     }
 
     @ApiOperation({ summary: 'Обновление задачи' })
@@ -43,11 +43,4 @@ export class TasksController {
         return this.tasksService.updateTask(Number(id), taskDto);
     }
 
-    // @ApiOperation({ summary: 'Обновление нескольких задач' })
-    // @ApiResponse({ status: 200, description: 'Задачи успешно обновлены' })
-    // @ApiResponse({ status: 404, description: 'Одна или несколько задач не найдены' })
-    // @Put()
-    // updateBatch(@Body() tasksDto: UpdateTasksDto[]) {
-    //     return this.tasksService.updateTasks(tasksDto);
-    // }
 }

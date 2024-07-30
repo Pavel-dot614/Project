@@ -30,11 +30,8 @@ export class TasksService {
     }
 
     async updateTasks(dto: UpdateTasksBatchDto){
-        for (const task of dto.tasks) {
-            await this.tasksRepository.update(task, { where: { id: task.id } });
-        }
-
-        return true
+       const task = await this.tasksRepository.update({ isComplete: true },{ where:{isComplete:!true}});
+        return task
     }
 
 }
